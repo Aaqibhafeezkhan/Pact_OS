@@ -46,6 +46,7 @@ docs/
 ├── ROADMAP.md                          # Current Verified Status & Future Planned Milestones
 ├── DESIGN_SYSTEM.md                    # Luxury Obsidian Canvas, 3D Celestial Hero & PACT Gold Tokens
 ├── TESTING.md                          # 56-Suite Automated Test Matrix & Verification Runbook
+├── TIMEZONE_GUIDE.md                   # 🌍 Multi-Timezone Setup, UTC Storage & DST Handling
 ├── TROUBLESHOOTING.md                  # 🔧 Practical Diagnostic Guide for Setup, Build & Git Roadblocks
 ├── USER_FLOWS.md                       # Core User Workflows & State Lifecycle Transitions
 ├── DECISIONS.md                        # Architecture Decision Records (ADRs)
@@ -73,6 +74,7 @@ docs/
 - [**Supabase Security & RLS**](./SUPABASE_SECURITY.md): Service role vs publishable key, `auth.uid()` RLS policies, and timing-safe cron token protection.
 - [**Threat Model Specification**](./THREAT_MODEL.md): Threat actor taxonomy, attack surface analysis, and defense-in-depth security mitigations.
 - [**Architecture Decision Records (ADRs)**](./DECISIONS.md): Durable technical choices, trade-offs, and design rationale.
+- [**Timezone Guide**](./TIMEZONE_GUIDE.md): UTC ISO 8601 storage, IANA validation, local display, and DST edge cases.
 - [**Local-First Data Persistence**](./LOCAL_FIRST_STORAGE.md): Storage tiers, the offline mutation queue, sync engine, delta replication, conflict resolution, and the evidence cache.
 
 ### 3. Developer Guide, Community & Operations
