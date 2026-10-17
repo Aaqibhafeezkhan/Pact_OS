@@ -14,12 +14,12 @@ interface ProjectFormModalProps {
 }
 
 const PRESET_ACCENT_COLORS = [
-  '#d4af37', // PACT Gold
-  '#3b82f6', // Sapphire Blue
-  '#10b981', // Emerald Green
-  '#ec4899', // Rose Pink
-  '#8b5cf6', // Violet Purple
-  '#f59e0b', // Amber Orange
+  { value: '#d4af37', name: 'PACT Gold' },
+  { value: '#3b82f6', name: 'Sapphire Blue' },
+  { value: '#10b981', name: 'Emerald Green' },
+  { value: '#ec4899', name: 'Rose Pink' },
+  { value: '#8b5cf6', name: 'Violet Purple' },
+  { value: '#f59e0b', name: 'Amber Orange' },
 ];
 
 export function ProjectFormModal({
@@ -33,7 +33,7 @@ export function ProjectFormModal({
   const [title, setTitle] = useState(projectToEdit?.title || '');
   const [description, setDescription] = useState(projectToEdit?.description || '');
   const [goalId, setGoalId] = useState<string>(projectToEdit?.goal_id || '');
-  const [colorAccent, setColorAccent] = useState<string>(projectToEdit?.color_accent || '#d4af37');
+  const [colorAccent, setColorAccent] = useState<string>(projectToEdit?.color_accent || PRESET_ACCENT_COLORS[0].value);
   const [status, setStatus] = useState<ProjectStatus>(projectToEdit?.status || 'active');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -46,7 +46,7 @@ export function ProjectFormModal({
     setTitle(projectToEdit?.title || '');
     setDescription(projectToEdit?.description || '');
     setGoalId(projectToEdit?.goal_id || '');
-    setColorAccent(projectToEdit?.color_accent || '#d4af37');
+    setColorAccent(projectToEdit?.color_accent || PRESET_ACCENT_COLORS[0].value);
     setStatus(projectToEdit?.status || 'active');
     setErrorMsg(null);
   }
@@ -243,19 +243,24 @@ export function ProjectFormModal({
               <label className="block text-xs font-medium text-zinc-300 mb-1.5">
                 Accent Color
               </label>
-              <div className="flex items-center gap-2">
-                {PRESET_ACCENT_COLORS.map((color) => (
-                  <button
-                    key={color}
-                    type="button"
-                    onClick={() => setColorAccent(color)}
-                    className={`w-6 h-6 rounded-full border transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 focus-visible:ring-[#d4af37] ${
-                      colorAccent === color ? 'scale-110 border-white ring-2 ring-[#d4af37]/50' : 'border-transparent opacity-80 hover:opacity-100'
-                    }`}
-                    style={{ backgroundColor: color }}
-                    aria-label={`Select accent color ${color}`}
-                  />
-                ))}
+              <div role="group" aria-label="Project accent color" className="flex items-center gap-2">
+                {PRESET_ACCENT_COLORS.map((color) => {
+                  const isSelected = colorAccent === color.value;
+
+                  return (
+                    <button
+                      key={color.value}
+                      type="button"
+                      onClick={() => setColorAccent(color.value)}
+                      className={'w-6 h-6 rounded-full border transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 ' + (
+                        isSelected ? 'scale-110 border-white ring-2 ring-[#d4af37]/50' : 'border-transparent opacity-80 hover:opacity-100'
+                      )}
+                      style={{ backgroundColor: color.value }}
+                      aria-label={'Select ' + color.name + ' project accent'}
+                      aria-pressed={isSelected}
+                    />
+                  );
+                })}
               </div>
             </div>
 
