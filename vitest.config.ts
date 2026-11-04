@@ -18,6 +18,7 @@ export default defineConfig({
       'tests/constant-time.test.ts',
       'tests/elo-rating.test.ts',
       'tests/array-utils.test.ts',
+      'tests/geohash.test.ts',
     ],
   },
 });
