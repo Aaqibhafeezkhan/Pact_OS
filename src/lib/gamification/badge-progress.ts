@@ -41,19 +41,30 @@ export function calculateBadgeProgress(
     throw new RangeError('currentCount must be a non-negative number.');
   }
 
-  const thresholds: Record<BadgeTierName, number> = {
-    ...DEFAULT_BADGE_THRESHOLDS,
-    ...customThresholds,
-  };
+  const thresholds: Record<BadgeTierName, number> = { ...DEFAULT_BADGE_THRESHOLDS };
+  if (customThresholds) {
+    for (const tier of TIER_ORDER) {
+      const override = customThresholds[tier];
+      if (override !== undefined) {
+        thresholds[tier] = override;
+      }
+    }
+  }
 
-  // Validate every merged threshold before scanning tiers.
-  for (const tier of TIER_ORDER) {
+  // Validate every merged threshold and enforce monotonic tier ordering before scanning.
+  for (let i = 0; i < TIER_ORDER.length; i += 1) {
+    const tier = TIER_ORDER[i];
     const threshold = thresholds[tier];
     if (typeof threshold !== 'number' || !Number.isFinite(threshold)) {
       throw new TypeError(`Threshold for ${tier} must be a finite number.`);
     }
     if (threshold < 0) {
       throw new RangeError(`Threshold for ${tier} must be a non-negative number.`);
+    }
+    if (i > 0 && threshold < thresholds[TIER_ORDER[i - 1]]) {
+      throw new RangeError(
+        `Threshold for ${tier} (${threshold}) cannot be less than ${TIER_ORDER[i - 1]} (${thresholds[TIER_ORDER[i - 1]]}).`,
+      );
     }
   }
 

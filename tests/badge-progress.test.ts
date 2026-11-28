@@ -135,6 +135,20 @@ describe('calculateBadgeProgress', () => {
     assert.throws(() => calculateBadgeProgress(-1), RangeError);
   });
 
+  it('ignores undefined overrides in customThresholds and falls back to defaults', () => {
+    const result = calculateBadgeProgress(10, { silver: undefined, gold: 60 });
+
+    assert.strictEqual(result.currentTier, 'bronze');
+    assert.strictEqual(result.nextTier, 'silver');
+    assert.strictEqual(result.nextTierThreshold, 25);
+    assert.strictEqual(result.remainingCount, 15);
+  });
+
+  it('rejects out-of-order custom thresholds with RangeError', () => {
+    assert.throws(() => calculateBadgeProgress(30, { bronze: 40 }), RangeError);
+    assert.throws(() => calculateBadgeProgress(10, { gold: 20 }), RangeError);
+  });
+
   it('rejects a non-finite count with TypeError', () => {
     assert.throws(() => calculateBadgeProgress(Number.NaN), TypeError);
     assert.throws(() => calculateBadgeProgress(Infinity), TypeError);
